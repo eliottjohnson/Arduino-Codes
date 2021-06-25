@@ -38,54 +38,89 @@ void setup() {
   int TotalRisingEdgesCurr = 0;
   int TotalRisingEdgesPrev = 0;
   int DiffTotalRisingEdges = 0;
-  long prevT = 0;
-  int i = 0;
-  int SummDiffTRE = 0;
-  float SummDeltaT = 0;
+  int interval = 100;
   float RPM = 0;
-  float sinus = 0;
-
-void loop() {
-  sinus = abs(255*sin(prevT/1e6));
-  setMotor(1,sinus);
+  float deltaT = 0;
+  int pwr = 0;
   
-  long currT = micros();
-  float deltaT = ((float) (currT - prevT))/( 1.0e6 );
-  prevT = currT;
+  // PID constants
+  float kp = 0.2;
+  float kd = 0.01;
+  float ki = 0.01;
+  // motor direction
+  int dir = 1;
+  int e;
+  long prevT = 0;
+  float eprev = 0;
+  float eintegral = 0;
+  int pwm = 0;
+  
+void loop() {
 
-  ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
+   int targetRPM = abs(250*sin(prevT/1e3));
+   
+   ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
     RisingA = RisingAintt;
     RisingB = RisingBintt;
-
   }
 
   //Number of rising encoder edges per revolution is 105.6
 
-  TotalRisingEdgesCurr = RisingA+RisingB;
-  DiffTotalRisingEdges = TotalRisingEdgesCurr - TotalRisingEdgesPrev;
-  TotalRisingEdgesPrev = TotalRisingEdgesCurr;
+    long currT = millis();
+    if (currT - prevT > interval) {
+      deltaT = ((float) (currT - prevT))/( 1.0e3 );
+      prevT = currT;
+  
+      TotalRisingEdgesCurr = RisingA+RisingB;
+      DiffTotalRisingEdges = TotalRisingEdgesCurr - TotalRisingEdgesPrev;
+      TotalRisingEdgesPrev = TotalRisingEdgesCurr;
+       
+      RPM = (float)((60*DiffTotalRisingEdges)/(deltaT))/(105.6); 
+
+      //error
+      e = targetRPM - RPM;
+      
+
+      // derivative
+      float dedt = (e-eprev)/(deltaT);
+
+      // integral
+      eintegral = eintegral + e*deltaT;
+      
+      pwr = pwr + kp*e + kd*dedt + ki*eintegral;
+
+      pwm = pwr;
+      
+      if (pwr>255){
+        pwm=255;
+      }
+//  
+//      dir = 1;
+//      if (pwr<0){
+//        dir = -1;
+//        pwm = abs(pwr);
+//        if (pwr<255){
+//          pwm = 255;
+//        }
+//      }
+      
+      Serial.print(targetRPM);
+      Serial.print(" ");
+      Serial.print(RPM);
+      Serial.println();
+   }
+  
+  
+
+    
+   // signal the motor
+   setMotor(dir,pwm);
 
 
-  // Condidition to smooth out RPM
-  if (i<10){
-    SummDiffTRE = SummDiffTRE + DiffTotalRisingEdges;
-    SummDeltaT = SummDeltaT + deltaT;
-    i++;
-  }
   
-  if (i==10){
-    RPM = ((60*SummDiffTRE)/(SummDeltaT))/(105.6);
-    SummDiffTRE = 0;
-    SummDeltaT = 0;
-    i=0;
-  }
+  
+  
 
-  
-  
-  Serial.print(sinus);
-  Serial.print(" ");
-  Serial.print(RPM);
-  Serial.println();
 }
 
 //Functions
