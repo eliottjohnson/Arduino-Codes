@@ -9,6 +9,6 @@ For this first project I'm using a [4.4:1 Metal Gearmotor 25Dx63L mm LP 6V with 
 <p align="center">
   <img src="https://a.pololu-files.com/picture/0J9890.600x480.jpg?c6dfea6448bb8ef0cef701de2d59b4d6" alt="4.4:1 Metal Gearmotor 25Dx63L mm LP 6V with 48 CPR Encoder" width="250"/>
   <img src="https://a.pololu-files.com/picture/0J8733.600x480.jpg?6e24fd8931ba87add62991cc66c0975a" alt="TB9051FTG Single Brushed DC Motor Driver Carrier" width="250"/>
-  <img src=" https://github.com/eliottjohnson/Arduino-Codes/blob/main/SetRPMwithPID/RPM%20vs%20TargetRPM%20Sin%20wave.jpg?raw=true" alt="Picture of TargetRPM vs RPM" width="250"/>
+  <img src="https://github.com/eliottjohnson/Arduino-Codes/blob/main/SetRPMwithPID/RPM%20vs%20TargetRPM%20Sin%20wave.jpg?raw=true" alt="Picture of TargetRPM vs RPM" width="250"/>
  
 </p>
