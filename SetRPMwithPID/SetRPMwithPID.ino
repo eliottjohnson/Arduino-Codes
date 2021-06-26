@@ -46,18 +46,23 @@ void setup() {
   // PID constants
   float kp = 0.2;
   float kd = 0.01;
-  float ki = 0.01;
+  float ki = 0.0;
   // motor direction
   int dir = 1;
   int e;
   long prevT = 0;
   float eprev = 0;
   float eintegral = 0;
-  int pwm = 0;
   
 void loop() {
 
-   int targetRPM = abs(250*sin(prevT/1e3));
+   int targetRPM = 750*sin(prevT/1e3);
+
+     
+      dir = 1;
+      if (targetRPM<0){
+        dir = -1;
+      }
    
    ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
     RisingA = RisingAintt;
@@ -78,7 +83,7 @@ void loop() {
       RPM = (float)((60*DiffTotalRisingEdges)/(deltaT))/(105.6); 
 
       //error
-      e = targetRPM - RPM;
+      e = abs(targetRPM) - RPM;
       
 
       // derivative
@@ -89,24 +94,15 @@ void loop() {
       
       pwr = pwr + kp*e + kd*dedt + ki*eintegral;
 
-      pwm = pwr;
       
       if (pwr>255){
-        pwm=255;
+        pwr=255;
       }
-//  
-//      dir = 1;
-//      if (pwr<0){
-//        dir = -1;
-//        pwm = abs(pwr);
-//        if (pwr<255){
-//          pwm = 255;
-//        }
-//      }
+
       
       Serial.print(targetRPM);
       Serial.print(" ");
-      Serial.print(RPM);
+      Serial.print(dir*RPM);
       Serial.println();
    }
   
@@ -114,7 +110,7 @@ void loop() {
 
     
    // signal the motor
-   setMotor(dir,pwm);
+   setMotor(dir,pwr);
 
 
   
