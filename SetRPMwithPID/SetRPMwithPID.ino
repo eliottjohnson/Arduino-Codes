@@ -131,33 +131,14 @@ void loop() {
   }    
   // signal the motor
   setMotor(dir,pwr);
+
+  if (RPM>500){
+    Ghost();
+  }
+  if (RPM <=500) {
+    Color();
+  }
   
-  // One rotation takes 60000/RPM millisecondes
-  analogWrite(LEDR1, 255);
-  analogWrite(LEDG1, 255);
-  analogWrite(LEDB1, 255);
-  
-  analogWrite(LEDR2, 255);
-  analogWrite(LEDG2, 255);
-  analogWrite(LEDB2, 255);
-  
-  analogWrite(LEDR3, 255);
-  analogWrite(LEDG3, 255);
-  analogWrite(LEDB3, 255);
-  
-  delay(60000/RPM);
-  analogWrite(LEDR1, red);
-  analogWrite(LEDG1, green);
-  analogWrite(LEDB1, blue);
-  
-  analogWrite(LEDR2, red);
-  analogWrite(LEDG2, green);
-  analogWrite(LEDB2, blue);
-  
-  analogWrite(LEDR3, red);
-  analogWrite(LEDG3, green);
-  analogWrite(LEDB3, blue);
-  delay(1);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -186,3 +167,74 @@ void readEncoderAR(){
 void readEncoderBR(){
   RisingBintt++;
   }
+
+void Ghost(){
+// One rotation takes 60000/RPM millisecondes
+  analogWrite(LEDR1, 255);
+  analogWrite(LEDG1, 255);
+  analogWrite(LEDB1, 255);
+  
+  analogWrite(LEDR2, 255);
+  analogWrite(LEDG2, 255);
+  analogWrite(LEDB2, 255);
+  
+  analogWrite(LEDR3, 255);
+  analogWrite(LEDG3, 255);
+  analogWrite(LEDB3, 255);
+  
+  delay(60000/RPM);
+  analogWrite(LEDR1, red);
+  analogWrite(LEDG1, green);
+  analogWrite(LEDB1, blue);
+  
+  analogWrite(LEDR2, red);
+  analogWrite(LEDG2, green);
+  analogWrite(LEDB2, blue);
+  
+  analogWrite(LEDR3, red);
+  analogWrite(LEDG3, green);
+  analogWrite(LEDB3, blue);
+  delay(1);
+}
+void Color(){
+  analogWrite(LEDR1, 0);
+  analogWrite(LEDG1, 255);
+  analogWrite(LEDB1, 255);
+  
+  analogWrite(LEDR2, 255);
+  analogWrite(LEDG2, 0);
+  analogWrite(LEDB2, 255);
+  
+  analogWrite(LEDR3, 255);
+  analogWrite(LEDG3, 255);
+  analogWrite(LEDB3, 0);
+}
+
+void Strobe(){
+analogWrite(LEDR1, 0);
+  analogWrite(LEDG1, 255);
+  analogWrite(LEDB1, 255);
+
+  analogWrite(LEDR3, 255);
+  analogWrite(LEDG3, 0);
+  analogWrite(LEDB3, 255);
+
+  analogWrite(LEDR2, 0);
+  analogWrite(LEDG2, 0);
+  analogWrite(LEDB2, 0);
+  delay(75);
+  analogWrite(LEDR2, 255);
+  analogWrite(LEDG2, 255);
+  analogWrite(LEDB2, 255);
+  delay(75);
+  analogWrite(LEDR2, 0);
+  analogWrite(LEDG2, 0);
+  analogWrite(LEDB2, 0);
+  delay(75);
+  analogWrite(LEDR2, 255);
+  analogWrite(LEDG2, 255);
+  analogWrite(LEDB2, 255);
+  delay(75);
+  
+  delay(1000);
+}
