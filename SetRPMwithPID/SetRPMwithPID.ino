@@ -72,8 +72,8 @@ void setup() {
   
   // PID constants
   float kp = 0.2; //proportional constant
-  float kd = 0.01; //derivatice constant
-  float ki = 0.0; //integral constant
+  float kd = 0.01; //derivative constant
+  float ki = 0.01; //integral constant
   
   int dir = 1; //motor direction
   int e; //error between targetRPM and actual RPM
@@ -84,19 +84,23 @@ void setup() {
   int red = 0;
   int green = 0;
   int blue = 0;
+
+  int pos = 0; 
   
 void loop() {
-  int targetRPM = 750*sin(prevT/1e3);
-  //int targetRPM = 750;    
+  //int targetRPM = 750*sin(prevT/1e3);
+  int targetRPM = 750;    
   dir = 1;
     if (targetRPM<0){
       dir = -1;
   }
 
+
   ATOMIC_BLOCK(ATOMIC_RESTORESTATE) {
     RisingA = RisingAintt;
     RisingB = RisingBintt;
   }
+
   
   long currT = millis();
   if (currT - prevT > interval) {
@@ -127,8 +131,21 @@ void loop() {
   }    
   // signal the motor
   setMotor(dir,pwr);
-  red = pwr;
   
+  // One rotation takes 60000/RPM millisecondes
+  analogWrite(LEDR1, 255);
+  analogWrite(LEDG1, 255);
+  analogWrite(LEDB1, 255);
+  
+  analogWrite(LEDR2, 255);
+  analogWrite(LEDG2, 255);
+  analogWrite(LEDB2, 255);
+  
+  analogWrite(LEDR3, 255);
+  analogWrite(LEDG3, 255);
+  analogWrite(LEDB3, 255);
+  
+  delay(60000/RPM);
   analogWrite(LEDR1, red);
   analogWrite(LEDG1, green);
   analogWrite(LEDB1, blue);
@@ -140,6 +157,7 @@ void loop() {
   analogWrite(LEDR3, red);
   analogWrite(LEDG3, green);
   analogWrite(LEDB3, blue);
+  delay(1);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -168,5 +186,3 @@ void readEncoderAR(){
 void readEncoderBR(){
   RisingBintt++;
   }
- 
-  
