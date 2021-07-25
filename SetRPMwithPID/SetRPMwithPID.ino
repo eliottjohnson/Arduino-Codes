@@ -85,10 +85,12 @@ void setup() {
   int green = 0;
   int blue = 0;
 
-  int pos = 0; 
-  
+
+    
 void loop() {
-  //int targetRPM = 750*sin(prevT/1e3);
+  red = abs(255*sin(prevT/1e3));
+  green = abs(255*sin(prevT/1e3-PI/3));
+  blue = abs(255*sin(prevT/1e3+PI/3));
   int targetRPM = 750;    
   dir = 1;
     if (targetRPM<0){
@@ -132,11 +134,27 @@ void loop() {
   // signal the motor
   setMotor(dir,pwr);
 
-  if (RPM>500){
+
+  if (RPM <=500) {
+    Color(0,255,255,255,0,255,255,255,0);
+  }
+
+  if (RPM>500 && currT > 1000 && currT <= 2000){
+    Color(0,255,255,0,255,255,0,255,255);
+  }
+  if (RPM>500 && currT > 2000 && currT <= 3000){
+    Color(255,255,0,255,255,0,255,255,0);
+  }
+  if (RPM>500 && currT > 3000 && currT <= 5000){
+    Color(255,0,255,255,0,255,255,0,225);
+  }
+
+  if (RPM>500 && currT > 5000 && currT <= 7000){
     Ghost();
   }
-  if (RPM <=500) {
-    Color();
+
+  if (RPM>500 && currT > 7000){
+    Color(red,green,blue,red,green,blue,red,green,blue);
   }
   
 }
@@ -183,31 +201,31 @@ void Ghost(){
   analogWrite(LEDB3, 255);
   
   delay(60000/RPM);
-  analogWrite(LEDR1, red);
-  analogWrite(LEDG1, green);
-  analogWrite(LEDB1, blue);
+  analogWrite(LEDR1, 0);
+  analogWrite(LEDG1, 0);
+  analogWrite(LEDB1, 0);
   
-  analogWrite(LEDR2, red);
-  analogWrite(LEDG2, green);
-  analogWrite(LEDB2, blue);
+  analogWrite(LEDR2, 0);
+  analogWrite(LEDG2, 0);
+  analogWrite(LEDB2, 0);
   
-  analogWrite(LEDR3, red);
-  analogWrite(LEDG3, green);
-  analogWrite(LEDB3, blue);
+  analogWrite(LEDR3, 0);
+  analogWrite(LEDG3, 0);
+  analogWrite(LEDB3, 0);
   delay(1);
 }
-void Color(){
-  analogWrite(LEDR1, 0);
-  analogWrite(LEDG1, 255);
-  analogWrite(LEDB1, 255);
+void Color(int r1,int g1,int b1,int r2,int g2,int b2,int r3,int g3,int b3){
+  analogWrite(LEDR1, r1);
+  analogWrite(LEDG1, g1);
+  analogWrite(LEDB1, b1);
   
-  analogWrite(LEDR2, 255);
-  analogWrite(LEDG2, 0);
-  analogWrite(LEDB2, 255);
+  analogWrite(LEDR2, r2);
+  analogWrite(LEDG2, g2);
+  analogWrite(LEDB2, b2);
   
-  analogWrite(LEDR3, 255);
-  analogWrite(LEDG3, 255);
-  analogWrite(LEDB3, 0);
+  analogWrite(LEDR3, r3);
+  analogWrite(LEDG3, g3);
+  analogWrite(LEDB3, b3);
 }
 
 void Strobe(){
