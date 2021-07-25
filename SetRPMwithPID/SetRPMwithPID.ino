@@ -17,6 +17,11 @@
 #define ENB 6 //BLUE
 #define EN 7 //YELLOW
 
+//RGB LED
+#define LEDR 11
+#define LEDG 13
+#define LEDB 12
+
 volatile int RisingAintt = 0;
 volatile int RisingBintt = 0;
 
@@ -31,6 +36,11 @@ void setup() {
 
   attachInterrupt(digitalPinToInterrupt(ENCA),readEncoderAR,RISING);
   attachInterrupt(digitalPinToInterrupt(ENCB),readEncoderBR,RISING);
+
+  pinMode(LEDR, OUTPUT);
+  pinMode(LEDG, OUTPUT);
+  pinMode(LEDB, OUTPUT);
+  
 }
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -56,6 +66,10 @@ void setup() {
   long prevT = 0; //previous time
   float eprev = 0; //previous error
   float eintegral = 0;
+
+  int r = 255;
+  int g = 255;
+  int b = 255;
   
 void loop() {
   int targetRPM = 750*sin(prevT/1e3);   
@@ -98,6 +112,9 @@ void loop() {
   }    
   // signal the motor
   setMotor(dir,pwr);
+  analogWrite(LEDR, abs(255-pwr));
+  analogWrite(LEDG, abs(255-pwr));
+  analogWrite(LEDB, abs(255-pwr));
 }
 
 /////////////////////////////////////////////////////////////////////////////////////
