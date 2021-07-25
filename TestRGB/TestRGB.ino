@@ -1,14 +1,14 @@
-#define LEDB1 11
 #define LEDR1 13
 #define LEDG1 12
+#define LEDB1 11
 
-#define LEDB2 10
-#define LEDR2 9
-#define LEDG2 8
+#define LEDR2 10
+#define LEDG2 9
+#define LEDB2 8
 
-#define LEDG3 44
-#define LEDR3 45
-#define LEDB3 46
+#define LEDR3 46
+#define LEDG3 45
+#define LEDB3 44
 void setup() {                
   pinMode(LEDR1, OUTPUT);
   pinMode(LEDG1, OUTPUT);
@@ -23,29 +23,16 @@ void setup() {
 
 void loop() {
 
-  analogWrite(LEDR1, 0);
+  analogWrite(LEDR1, 255);
   analogWrite(LEDG1, 255);
   analogWrite(LEDB1, 255);
   
-  analogWrite(LEDR2, 0);
-  analogWrite(LEDG2, 0);
-  analogWrite(LEDB2, 0);
-  delay(75);
   analogWrite(LEDR2, 255);
   analogWrite(LEDG2, 255);
   analogWrite(LEDB2, 255);
-  delay(75);
-  analogWrite(LEDR2, 0);
-  analogWrite(LEDG2, 0);
-  analogWrite(LEDB2, 0);
-  delay(75);
-  analogWrite(LEDR2, 255);
-  analogWrite(LEDG2, 255);
-  analogWrite(LEDB2, 255);
-  delay(75);
   
   analogWrite(LEDR3, 255);
-  analogWrite(LEDG3, 0);
+  analogWrite(LEDG3, 255);
   analogWrite(LEDB3, 255);
   delay(1000);
 }

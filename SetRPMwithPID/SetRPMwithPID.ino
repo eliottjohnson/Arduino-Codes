@@ -18,9 +18,17 @@
 #define EN 7 //YELLOW
 
 //RGB LED
-#define LEDR 11
-#define LEDG 13
-#define LEDB 12
+#define LEDR1 13
+#define LEDG1 12
+#define LEDB1 11
+
+#define LEDR2 10
+#define LEDG2 9
+#define LEDB2 8
+
+#define LEDR3 46
+#define LEDG3 45
+#define LEDB3 44
 
 volatile int RisingAintt = 0;
 volatile int RisingBintt = 0;
@@ -37,9 +45,15 @@ void setup() {
   attachInterrupt(digitalPinToInterrupt(ENCA),readEncoderAR,RISING);
   attachInterrupt(digitalPinToInterrupt(ENCB),readEncoderBR,RISING);
 
-  pinMode(LEDR, OUTPUT);
-  pinMode(LEDG, OUTPUT);
-  pinMode(LEDB, OUTPUT);
+  pinMode(LEDR1, OUTPUT);
+  pinMode(LEDG1, OUTPUT);
+  pinMode(LEDB1, OUTPUT);
+  pinMode(LEDR2, OUTPUT);
+  pinMode(LEDG2, OUTPUT);
+  pinMode(LEDB2, OUTPUT);
+  pinMode(LEDR3, OUTPUT);
+  pinMode(LEDG3, OUTPUT);
+  pinMode(LEDB3, OUTPUT);
   
 }
 
@@ -67,12 +81,13 @@ void setup() {
   float eprev = 0; //previous error
   float eintegral = 0;
 
-  int r = 255;
-  int g = 255;
-  int b = 255;
+  int red = 0;
+  int green = 0;
+  int blue = 0;
   
 void loop() {
-  int targetRPM = 750*sin(prevT/1e3);   
+  int targetRPM = 750*sin(prevT/1e3);
+  //int targetRPM = 750;    
   dir = 1;
     if (targetRPM<0){
       dir = -1;
@@ -112,9 +127,19 @@ void loop() {
   }    
   // signal the motor
   setMotor(dir,pwr);
-  analogWrite(LEDR, abs(255-pwr));
-  analogWrite(LEDG, abs(255-pwr));
-  analogWrite(LEDB, abs(255-pwr));
+  red = pwr;
+  
+  analogWrite(LEDR1, red);
+  analogWrite(LEDG1, green);
+  analogWrite(LEDB1, blue);
+  
+  analogWrite(LEDR2, red);
+  analogWrite(LEDG2, green);
+  analogWrite(LEDB2, blue);
+  
+  analogWrite(LEDR3, red);
+  analogWrite(LEDG3, green);
+  analogWrite(LEDB3, blue);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////
